@@ -22,7 +22,7 @@ echo "==> 已确认顶级密钥"
 
 # 步骤 2: 生成节点密钥对与授权证书
 echo "==> 安装 blocklink 依赖..."
-pip install blocklink -q
+pip3 install blocklink -q
 
 echo "==> 生成节点密钥对与授权证书..."
 python3 - <<PYEOF
