@@ -6,6 +6,22 @@
 KEY_DIR="${HOME:-/root}/block_key"
 REPO_DIR="${HOME:-/root}/BlockBase"
 
+install_pip() {
+    if ! command -v pip3 &>/dev/null; then
+        echo "==> 安装 pip3..."
+        if command -v apt-get &>/dev/null; then
+            apt-get update -q && apt-get install -y python3-pip
+        elif command -v yum &>/dev/null; then
+            yum install -y python3-pip
+        elif command -v dnf &>/dev/null; then
+            dnf install -y python3-pip
+        else
+            echo "错误：无法自动安装 pip3，请手动安装后重试。"
+            exit 1
+        fi
+    fi
+}
+
 ask_ipfs() {
     read -r -p "是否开启 IPFS 存储？[y/N] " ENABLE_IPFS
     ENABLE_IPFS=$(echo "$ENABLE_IPFS" | tr '[:upper:]' '[:lower:]')

@@ -12,6 +12,7 @@ TOP_PRIV="$KEY_DIR/private_key_top.pem"
 TOP_PUB="$KEY_DIR/public_key_top.pem"
 
 echo "==> 安装 blocklink 依赖..."
+install_pip
 pip3 install blocklink -q
 
 if [ -f "$TOP_PRIV" ] && [ -f "$TOP_PUB" ]; then
