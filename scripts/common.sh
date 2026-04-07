@@ -49,19 +49,18 @@ ask_ipfs() {
 }
 
 setup_ipfs() {
-    # 刷新 PATH，确保刚安装的 docker 可以找到
-    hash -r 2>/dev/null || true
-    export PATH="/usr/bin:/usr/sbin:/usr/local/bin:$PATH"
+    # 用绝对路径确保刚安装的 docker 可以找到
+    DOCKER=$(command -v docker || echo /usr/bin/docker)
 
     echo "==> 创建 Docker 网络 block（已存在则忽略）..."
-    docker network create block 2>/dev/null || true
+    $DOCKER network create block 2>/dev/null || true
 
     if [ "$ENABLE_IPFS" = "y" ]; then
         echo "==> 启动 IPFS 容器..."
-        if docker ps -a --format '{{.Names}}' | grep -q '^ipfs$'; then
+        if $DOCKER ps -a --format '{{.Names}}' | grep -q '^ipfs$'; then
             echo "    IPFS 容器已存在，跳过创建"
         else
-            docker run -d \
+            $DOCKER run -d \
                 --name ipfs \
                 --restart always \
                 --network block \

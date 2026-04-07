@@ -46,7 +46,9 @@ generate_identity
 # 步骤 6: Docker
 setup_ipfs
 echo "==> 启动服务..."
-docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
+DOCKER=$(command -v docker || echo /usr/bin/docker)
+$DOCKER compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
+    docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
 
 print_result
 echo "   顶级私钥:    $TOP_PRIV"
