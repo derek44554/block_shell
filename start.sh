@@ -17,6 +17,8 @@ else
     SCRIPT_DIR="$TMP_DIR/scripts"
 fi
 
+export SCRIPT_DIR
+
 echo "请选择操作："
 echo "  1) 全新部署"
 echo "  2) 新增节点（已有顶级密钥）"

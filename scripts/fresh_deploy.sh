@@ -2,6 +2,11 @@
 # fresh_deploy.sh
 # 全新部署流程：生成顶级密钥对、节点密钥对与授权证书，克隆项目，放置配置文件，启动服务。
 set -e
+source "$SCRIPT_DIR/common.sh"
+
+ask_ipfs
+
+# 步骤 1: 生成顶级密钥对
 mkdir -p "$KEY_DIR"
 TOP_PRIV="$KEY_DIR/private_key_top.pem"
 TOP_PUB="$KEY_DIR/public_key_top.pem"

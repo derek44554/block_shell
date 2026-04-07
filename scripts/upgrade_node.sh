@@ -2,7 +2,7 @@
 # upgrade_node.sh
 # 节点升级：停止当前容器，拉取最新代码，重新构建并启动服务。
 set -e
-source "$(dirname "$0")/common.sh"
+source "$SCRIPT_DIR/common.sh"
 
 echo "==> 升级节点..."
 docker-compose -f "$REPO_DIR/docker-compose.yml" down

@@ -2,7 +2,7 @@
 # enable_ipfs.sh
 # 为已有节点开启 IPFS 存储：启动 IPFS 容器，并将 ipfs_api 写入指定节点的 node.yml。
 set -e
-source "$(dirname "$0")/common.sh"
+source "$SCRIPT_DIR/common.sh"
 
 # 步骤 1: 启动 IPFS 容器
 echo "==> 创建 Docker 网络 block（已存在则忽略）..."

@@ -2,7 +2,7 @@
 # add_node.sh
 # 新增节点流程：载入已有顶级密钥，生成新节点密钥对与授权证书，克隆项目，放置配置文件，启动服务。
 set -e
-source "$(dirname "$0")/common.sh"
+source "$SCRIPT_DIR/common.sh"
 
 ask_ipfs
 
