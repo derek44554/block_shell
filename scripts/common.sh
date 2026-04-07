@@ -3,8 +3,8 @@
 # 公共变量与工具函数，供其他脚本通过 source 引用。
 # 包含：路径变量、IPFS 询问与启动、App 密钥生成、部署结果输出。
 
-KEY_DIR="$HOME/block_key"
-REPO_DIR="$HOME/BlockBase"
+KEY_DIR="${HOME:-/root}/block_key"
+REPO_DIR="${HOME:-/root}/BlockBase"
 
 ask_ipfs() {
     read -r -p "是否开启 IPFS 存储？[y/N] " ENABLE_IPFS

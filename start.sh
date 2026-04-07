@@ -18,6 +18,7 @@ else
 fi
 
 export SCRIPT_DIR
+export HOME="${HOME:-$(getent passwd $(whoami) | cut -d: -f6)}"
 
 echo "请选择操作："
 echo "  1) 全新部署"
