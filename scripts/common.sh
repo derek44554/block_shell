@@ -6,6 +6,25 @@
 KEY_DIR="${HOME:-/root}/block_key"
 REPO_DIR="${HOME:-/root}/BlockBase"
 
+check_deps() {
+    local pkgs=()
+    command -v git    &>/dev/null || pkgs+=(git)
+    command -v docker &>/dev/null || pkgs+=(docker.io)
+    if [ ${#pkgs[@]} -gt 0 ]; then
+        echo "==> 安装缺失依赖: ${pkgs[*]}"
+        if command -v apt-get &>/dev/null; then
+            apt-get update -q && apt-get install -y "${pkgs[@]}"
+        elif command -v yum &>/dev/null; then
+            yum install -y "${pkgs[@]}"
+        elif command -v dnf &>/dev/null; then
+            dnf install -y "${pkgs[@]}"
+        else
+            echo "错误：无法自动安装依赖，请手动安装: ${pkgs[*]}"
+            exit 1
+        fi
+    fi
+}
+
 ask_ipfs() {
     read -r -p "是否开启 IPFS 存储？[y/N] " ENABLE_IPFS
     ENABLE_IPFS=$(echo "$ENABLE_IPFS" | tr '[:upper:]' '[:lower:]')
