@@ -2,10 +2,11 @@
 set -e
 
 REPO_URL="https://raw.githubusercontent.com/derek44554/block_shell/main"
-SCRIPT_DIR="$(dirname "$0")/scripts"
 
-# 如果 scripts/ 目录不存在，说明是远程执行，自动下载所有子脚本
-if [ ! -d "$SCRIPT_DIR" ]; then
+# 判断是否远程执行（$0 为 /dev/stdin 或 bash）
+if [ -f "$(dirname "$0")/scripts/common.sh" ]; then
+    SCRIPT_DIR="$(dirname "$0")/scripts"
+else
     echo "==> 下载脚本文件..."
     TMP_DIR=$(mktemp -d)
     mkdir -p "$TMP_DIR/scripts"
