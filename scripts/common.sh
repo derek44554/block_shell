@@ -23,6 +23,23 @@ check_deps() {
             exit 1
         fi
     fi
+    # 安装后刷新 PATH
+    hash -r 2>/dev/null || true
+    export PATH="/usr/bin:/usr/sbin:/usr/local/bin:$PATH"
+    # docker-compose 兼容：优先用插件，否则安装独立版
+    if ! command -v docker-compose &>/dev/null; then
+        if docker compose version &>/dev/null 2>&1; then
+            # docker compose 插件可用，创建别名
+            echo '#!/bin/sh' > /usr/local/bin/docker-compose
+            echo 'exec docker compose "$@"' >> /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+        else
+            echo "==> 安装 docker-compose..."
+            if command -v apt-get &>/dev/null; then
+                apt-get install -y docker-compose
+            fi
+        fi
+    fi
 }
 
 ask_ipfs() {
@@ -32,6 +49,10 @@ ask_ipfs() {
 }
 
 setup_ipfs() {
+    # 刷新 PATH，确保刚安装的 docker 可以找到
+    hash -r 2>/dev/null || true
+    export PATH="/usr/bin:/usr/sbin:/usr/local/bin:$PATH"
+
     echo "==> 创建 Docker 网络 block（已存在则忽略）..."
     docker network create block 2>/dev/null || true
 
