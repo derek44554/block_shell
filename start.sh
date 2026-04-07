@@ -1,7 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
+REPO_URL="https://raw.githubusercontent.com/derek44554/block_shell/main"
 SCRIPT_DIR="$(dirname "$0")/scripts"
+
+# 如果 scripts/ 目录不存在，说明是远程执行，自动下载所有子脚本
+if [ ! -d "$SCRIPT_DIR" ]; then
+    echo "==> 下载脚本文件..."
+    TMP_DIR=$(mktemp -d)
+    mkdir -p "$TMP_DIR/scripts"
+    for f in common.sh fresh_deploy.sh add_node.sh start_node.sh upgrade_node.sh enable_ipfs.sh; do
+        curl -fsSL "$REPO_URL/scripts/$f" -o "$TMP_DIR/scripts/$f"
+        chmod +x "$TMP_DIR/scripts/$f"
+    done
+    SCRIPT_DIR="$TMP_DIR/scripts"
+fi
 
 echo "请选择操作："
 echo "  1) 全新部署"
