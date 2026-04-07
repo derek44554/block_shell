@@ -10,7 +10,7 @@ else
     echo "==> 下载脚本文件..."
     TMP_DIR=$(mktemp -d)
     mkdir -p "$TMP_DIR/scripts"
-    for f in common.sh fresh_deploy.sh add_node.sh start_node.sh upgrade_node.sh enable_ipfs.sh; do
+    for f in common.sh gen_keys.sh fresh_deploy.sh add_node.sh start_node.sh upgrade_node.sh enable_ipfs.sh; do
         curl -fsSL "$REPO_URL/scripts/$f" -o "$TMP_DIR/scripts/$f"
         chmod +x "$TMP_DIR/scripts/$f"
     done

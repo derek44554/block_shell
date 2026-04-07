@@ -3,6 +3,7 @@
 # 新增节点流程：载入已有顶级密钥，生成新节点密钥对与授权证书，克隆项目，放置配置文件，启动服务。
 set -e
 source "$SCRIPT_DIR/common.sh"
+source "$SCRIPT_DIR/gen_keys.sh"
 
 ask_ipfs
 
@@ -21,18 +22,8 @@ fi
 echo "==> 已确认顶级密钥"
 
 # 步骤 2: 生成节点密钥对与授权证书
-echo "==> 安装 blocklink 依赖..."
-install_pip
-pip3 install blocklink -q
-
 echo "==> 生成节点密钥对与授权证书..."
-python3 - <<PYEOF
-import os
-os.chdir("$KEY_DIR")
-from blocklink.adapters.key.key_loot import generate_node
-generate_node(private_key_top_path="$TOP_PRIV")
-PYEOF
-chmod 600 "$KEY_DIR/private_key.pem"
+gen_node "$TOP_PRIV" "$KEY_DIR"
 
 # 步骤 3: 克隆项目
 if [ -d "$REPO_DIR/.git" ]; then
