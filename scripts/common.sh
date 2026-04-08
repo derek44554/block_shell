@@ -7,38 +7,32 @@ KEY_DIR="${HOME:-/root}/block_key"
 REPO_DIR="${HOME:-/root}/BlockBase"
 
 check_deps() {
-    local pkgs=()
-    command -v git    &>/dev/null || pkgs+=(git)
-    command -v docker &>/dev/null || pkgs+=(docker.io)
-    if [ ${#pkgs[@]} -gt 0 ]; then
-        echo "==> 安装缺失依赖: ${pkgs[*]}"
+    # 安装 git
+    if ! command -v git &>/dev/null; then
+        echo "==> 安装 git..."
         if command -v apt-get &>/dev/null; then
-            apt-get update -q && apt-get install -y "${pkgs[@]}"
+            apt-get update -q && apt-get install -y git
         elif command -v yum &>/dev/null; then
-            yum install -y "${pkgs[@]}"
+            yum install -y git
         elif command -v dnf &>/dev/null; then
-            dnf install -y "${pkgs[@]}"
-        else
-            echo "错误：无法自动安装依赖，请手动安装: ${pkgs[*]}"
-            exit 1
+            dnf install -y git
         fi
     fi
-    # 安装后启动 docker 服务并刷新 PATH
-    hash -r 2>/dev/null || true
-    export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH"
-    systemctl start docker 2>/dev/null || service docker start 2>/dev/null || true
-    # docker-compose 兼容：优先用插件，否则安装独立版
-    if ! command -v docker-compose &>/dev/null; then
-        if docker compose version &>/dev/null 2>&1; then
-            # docker compose 插件可用，创建别名
-            echo '#!/bin/sh' > /usr/local/bin/docker-compose
-            echo 'exec docker compose "$@"' >> /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
-        else
-            echo "==> 安装 docker-compose..."
-            if command -v apt-get &>/dev/null; then
-                apt-get install -y docker-compose
-            fi
+
+    # 安装 docker（用官方脚本）
+    if ! command -v docker &>/dev/null; then
+        echo "==> 安装 Docker..."
+        curl -fsSL https://get.docker.com | sh
+        systemctl start docker
+        systemctl enable docker 2>/dev/null || true
+    fi
+
+    # 安装 docker-compose
+    if ! command -v docker-compose &>/dev/null && ! docker compose version &>/dev/null 2>&1; then
+        echo "==> 安装 docker-compose..."
+        if command -v apt-get &>/dev/null; then
+            apt-get install -y docker-compose-plugin 2>/dev/null || \
+            apt-get install -y docker-compose 2>/dev/null || true
         fi
     fi
 }
@@ -50,22 +44,15 @@ ask_ipfs() {
 }
 
 setup_ipfs() {
-    # 找到 docker 实际路径
-    DOCKER=$(command -v docker || find /usr /usr/local -name docker -type f 2>/dev/null | head -1)
-    if [ -z "$DOCKER" ]; then
-        echo "错误：找不到 docker，请确认安装成功后重试。"
-        exit 1
-    fi
-
     echo "==> 创建 Docker 网络 block（已存在则忽略）..."
-    $DOCKER network create block 2>/dev/null || true
+    docker network create block 2>/dev/null || true
 
     if [ "$ENABLE_IPFS" = "y" ]; then
         echo "==> 启动 IPFS 容器..."
-        if $DOCKER ps -a --format '{{.Names}}' | grep -q '^ipfs$'; then
+        if docker ps -a --format '{{.Names}}' | grep -q '^ipfs$'; then
             echo "    IPFS 容器已存在，跳过创建"
         else
-            $DOCKER run -d \
+            docker run -d \
                 --name ipfs \
                 --restart always \
                 --network block \

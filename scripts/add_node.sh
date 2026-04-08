@@ -50,8 +50,7 @@ generate_identity
 # 步骤 6: Docker
 setup_ipfs
 echo "==> 启动服务..."
-DOCKER=$(command -v docker || find /usr /usr/local -name docker -type f 2>/dev/null | head -1)
-$DOCKER compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
+docker compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
     docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
 
 print_result
