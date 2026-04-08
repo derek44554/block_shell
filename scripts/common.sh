@@ -96,7 +96,9 @@ print_result() {
     echo "✅ 部署完成！"
     echo "   本地访问:    http://localhost:24001"
     echo "   App 端密钥:  $(grep IDENTITY "$REPO_DIR/.env" | cut -d= -f2)"
+    echo "   节点目录:    $REPO_DIR"
     if [ "$ENABLE_IPFS" = "y" ]; then
         echo "   IPFS 地址:   http://localhost:8080/ipfs/"
+        echo "   IPFS 数据:   /home/IPFS"
     fi
 }
