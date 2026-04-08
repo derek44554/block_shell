@@ -16,7 +16,7 @@ else
         --name ipfs \
         --restart always \
         --network block \
-        -v /home/IPFS:/data/ipfs \
+        -v "$HOME/IPFS:/data/ipfs" \
         -p 4001:4001 \
         -p 8080:8080 \
         -p 127.0.0.1:5001:5001 \

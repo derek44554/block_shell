@@ -58,7 +58,7 @@ setup_ipfs() {
                 --name ipfs \
                 --restart always \
                 --network block \
-                -v /home/IPFS:/data/ipfs \
+                -v "$HOME/IPFS:/data/ipfs" \
                 -p 4001:4001 \
                 -p 8080:8080 \
                 -p 127.0.0.1:5001:5001 \
@@ -99,6 +99,6 @@ print_result() {
     echo "   节点目录:    $REPO_DIR"
     if [ "$ENABLE_IPFS" = "y" ]; then
         echo "   IPFS 地址:   http://localhost:8080/ipfs/"
-        echo "   IPFS 数据:   /home/IPFS"
+        echo "   IPFS 数据:   $HOME/IPFS"
     fi
 }
