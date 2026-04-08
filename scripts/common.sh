@@ -22,6 +22,8 @@ check_deps() {
     # 安装 docker（用官方脚本）
     if ! command -v docker &>/dev/null; then
         echo "==> 安装 Docker..."
+        # 先移除可能冲突的旧版本
+        apt-get remove -y docker.io docker-compose containerd runc 2>/dev/null || true
         curl -fsSL https://get.docker.com | sh
         systemctl start docker
         systemctl enable docker 2>/dev/null || true
