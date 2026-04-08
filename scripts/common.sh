@@ -23,9 +23,10 @@ check_deps() {
             exit 1
         fi
     fi
-    # 安装后刷新 PATH
+    # 安装后启动 docker 服务并刷新 PATH
     hash -r 2>/dev/null || true
-    export PATH="/usr/bin:/usr/sbin:/usr/local/bin:$PATH"
+    export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH"
+    systemctl start docker 2>/dev/null || service docker start 2>/dev/null || true
     # docker-compose 兼容：优先用插件，否则安装独立版
     if ! command -v docker-compose &>/dev/null; then
         if docker compose version &>/dev/null 2>&1; then
@@ -49,8 +50,12 @@ ask_ipfs() {
 }
 
 setup_ipfs() {
-    # 用绝对路径确保刚安装的 docker 可以找到
-    DOCKER=$(command -v docker || echo /usr/bin/docker)
+    # 找到 docker 实际路径
+    DOCKER=$(command -v docker || find /usr /usr/local -name docker -type f 2>/dev/null | head -1)
+    if [ -z "$DOCKER" ]; then
+        echo "错误：找不到 docker，请确认安装成功后重试。"
+        exit 1
+    fi
 
     echo "==> 创建 Docker 网络 block（已存在则忽略）..."
     $DOCKER network create block 2>/dev/null || true
