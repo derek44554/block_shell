@@ -52,4 +52,4 @@ docker compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
 print_result
 echo "   顶级私钥:    $TOP_PRIV"
 echo "   顶级公钥:    $TOP_PUB"
-echo "   ⚠️  请妥善保管顶级密钥，切勿泄露或上传到公共仓库！"
+echo "   ⚠️  请妥善保管顶级私钥，切勿泄露或上传到公共仓库！"
