@@ -43,11 +43,17 @@ cp "$KEY_DIR/signature.yml"    "$REPO_DIR/resources/signature.yml"
 # 步骤 5: App 配置密钥
 generate_identity
 
-# 步骤 6: Docker
-setup_ipfs
+# 步骤 6: 写入 IPFS 配置（如开启）
+setup_ipfs_config
+
+# 步骤 7: 清理 block_key 中的节点临时文件，只保留顶级密钥
+echo "==> 清理节点临时文件..."
+rm -f "$KEY_DIR/node.yml" "$KEY_DIR/signature.yml" \
+      "$KEY_DIR/private_key.pem" "$KEY_DIR/public_key.pem"
+
+# 步骤 8: 启动 Docker
 echo "==> 启动服务..."
-docker compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
-    docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
+start_docker
 
 print_result
 echo "   顶级私钥:    $TOP_PRIV"

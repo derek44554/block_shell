@@ -45,8 +45,16 @@ ask_ipfs() {
     export ENABLE_IPFS
 }
 
-setup_ipfs() {
-    echo "==> 创建 Docker 网络 block（已存在则忽略）..."
+setup_ipfs_config() {
+    if [ "$ENABLE_IPFS" = "y" ]; then
+        if ! grep -q "ipfs_api" "$REPO_DIR/node.yml" 2>/dev/null; then
+            echo "ipfs_api: http://ipfs:5001/api/v0" >> "$REPO_DIR/node.yml"
+            echo "==> 已写入 ipfs_api 到 node.yml"
+        fi
+    fi
+}
+
+start_docker() {
     docker network create block 2>/dev/null || true
 
     if [ "$ENABLE_IPFS" = "y" ]; then
@@ -66,14 +74,10 @@ setup_ipfs() {
                 ipfs/go-ipfs:latest \
                 daemon --migrate=true --agent-version-suffix=docker
         fi
-
-        if ! grep -q "ipfs_api" "$REPO_DIR/node.yml" 2>/dev/null; then
-            echo "ipfs_api: http://ipfs:5001/api/v0" >> "$REPO_DIR/node.yml"
-            echo "    已写入 ipfs_api 到 node.yml"
-        fi
-    else
-        echo "==> 已跳过 IPFS 容器"
     fi
+
+    docker compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
+        docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
 }
 
 generate_identity() {
