@@ -40,8 +40,8 @@ check_deps() {
 }
 
 ask_ipfs() {
-    read -r -p "是否开启 IPFS 存储？[y/N] " ENABLE_IPFS
-    ENABLE_IPFS=$(echo "$ENABLE_IPFS" | tr '[:upper:]' '[:lower:]')
+    read -r -p "是否开启 IPFS 存储？[Y/n] " ENABLE_IPFS
+    ENABLE_IPFS=$(echo "${ENABLE_IPFS:-y}" | tr '[:upper:]' '[:lower:]')
     export ENABLE_IPFS
 }
 

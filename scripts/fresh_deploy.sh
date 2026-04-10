@@ -5,8 +5,8 @@ set -e
 source "$SCRIPT_DIR/common.sh"
 source "$SCRIPT_DIR/gen_keys.sh"
 
-check_deps
 ask_ipfs
+check_deps
 
 # 步骤 1: 生成顶级密钥对
 TOP_PRIV="$KEY_DIR/private_key_top.pem"
