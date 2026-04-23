@@ -18,13 +18,6 @@ bash <(curl -fsSL https://raw.githubusercontent.com/derek44554/block_shell/main/
 | 4) 节点升级 | 拉取最新代码并重新构建 |
 | 5) 开启 IPFS 存储 | 为已有节点启动 IPFS 容器并完成对接 |
 
-## 前置要求
-
-- Python 3.8+
-- Docker & Docker Compose
-- pip
-- git
-
 ## 密钥说明
 
 - 全新部署时，顶级密钥对会保存在 `~/block_key/`，请妥善保管，切勿泄露

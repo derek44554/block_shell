@@ -29,12 +29,11 @@ check_deps() {
         systemctl enable docker 2>/dev/null || true
     fi
 
-    # 安装 docker-compose
-    if ! command -v docker-compose &>/dev/null && ! docker compose version &>/dev/null 2>&1; then
-        echo "==> 安装 docker-compose..."
+    # 安装 Docker Compose 插件（docker compose）
+    if ! docker compose version &>/dev/null 2>&1; then
+        echo "==> 安装 Docker Compose 插件..."
         if command -v apt-get &>/dev/null; then
-            apt-get install -y docker-compose-plugin 2>/dev/null || \
-            apt-get install -y docker-compose 2>/dev/null || true
+            apt-get install -y docker-compose-plugin 2>/dev/null || true
         fi
     fi
 }
@@ -76,8 +75,7 @@ start_docker() {
         fi
     fi
 
-    docker compose -f "$REPO_DIR/docker-compose.yml" up -d 2>/dev/null || \
-        docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
+    docker compose -f "$REPO_DIR/docker-compose.yml" up -d
 }
 
 generate_identity() {

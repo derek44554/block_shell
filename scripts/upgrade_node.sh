@@ -5,9 +5,9 @@ set -e
 source "$SCRIPT_DIR/common.sh"
 
 echo "==> 升级节点..."
-docker-compose -f "$REPO_DIR/docker-compose.yml" down
+docker compose -f "$REPO_DIR/docker-compose.yml" down
 git -C "$REPO_DIR" pull
-docker-compose -f "$REPO_DIR/docker-compose.yml" up -d --build
+docker compose -f "$REPO_DIR/docker-compose.yml" up -d --build
 
 echo ""
 echo "✅ 节点升级完成！"

@@ -16,7 +16,7 @@
 ### 前置要求
 
 - Python 3.8+
-- Docker & Docker Compose
+- Docker（含 Compose 插件）
 - pip 包管理器
 
 ### 安装依赖
@@ -90,7 +90,7 @@ BlockBase/
 docker network create block
 
 # 启动 Docker 容器
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 4. 验证部署
@@ -107,8 +107,8 @@ docker-compose up -d
 
 ```bash
 # 停止并删除旧容器，重新构建镜像
-docker-compose down
-docker-compose up -d --build
+docker compose down
+docker compose up -d --build
 ```
 
 ---
@@ -168,17 +168,5 @@ random_bytes = os.urandom(32)
 b64_token = base64.b64encode(random_bytes).decode("utf-8")
 ```
 
----
-## 📄 许可证
-
-详见 [LICENSE](LICENSE) 文件
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
----
-
-**注意：** 请妥善保管所有私钥文件，切勿上传到公共仓库或分享给他人。
 
 

@@ -5,7 +5,7 @@ set -e
 source "$SCRIPT_DIR/common.sh"
 
 echo "==> 启动已有节点..."
-docker-compose -f "$REPO_DIR/docker-compose.yml" up -d
+docker compose -f "$REPO_DIR/docker-compose.yml" up -d
 
 echo ""
 echo "✅ 节点已启动！"

@@ -83,13 +83,13 @@ PYEOF
     # 8. 写入 node.yml
     cat > "$out_dir/node.yml" <<EOF
 bid: $node_bid
-model: node
+model: 86e12c3c8fcd58f28a3a581f4df52578
 EOF
 
     # 9. 写入 signature.yml
     cat > "$out_dir/signature.yml" <<EOF
 bid: $sig_bid
-model: signature
+model: 6c11d51518ef5daca61d9689660328e5
 signature: $sig_b64
 owner: $node_bid
 permission_level: $perm
